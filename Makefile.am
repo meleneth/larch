@@ -3,8 +3,8 @@ bin_PROGRAMS = bin/larch bin/larcht
 ACLOCAL_AMFLAGS = -I m4
 
 bin_larch_SOURCES = src/larch.cpp \
-src/larch.cpp \
-src/larcht.cpp \
+vendor/easylogging++.h \
+vendor/gsl.h \
 src/larch_types.hpp \
 src/stringpattern.cpp \
 src/stringpattern.hpp \
@@ -26,8 +26,8 @@ src/web_static_file.cpp \
 src/web_static_file.hpp
 
 bin_larcht_SOURCES = src/larcht.cpp \
-src/larch.cpp \
-src/larcht.cpp \
+src/easylogging++.h \
+vendor/gsl.h \
 src/larch_types.hpp \
 src/stringpattern.cpp \
 src/stringpattern.hpp \
@@ -48,4 +48,4 @@ src/web_server.hpp \
 src/web_static_file.cpp \
 src/web_static_file.hpp
 
-AM_CXXFLAGS = -I src
+AM_CXXFLAGS = -I src -I vendor

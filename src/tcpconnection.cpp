@@ -1,9 +1,9 @@
 #include "tcpconnection.hpp"
-#include "console.hpp"
+#include "easylogging++.h"
 
 using namespace Larch;
 // Public data members go here.
-TCPConnection::TCPConnection(string hostname, int port) // Constructor
+TCPConnection::TCPConnection(std::string hostname, int port) // Constructor
 {
     buf_start_pos = 0;
     buf_end_pos = 0;
@@ -61,7 +61,7 @@ void TCPConnection::slice_buffer_strings(void)
             buf[index] = 0;
         if(buf[index] == '\n'){
             buf[index] = 0;
-            string line = buf + buf_start_pos;
+            std::string line = buf + buf_start_pos;
             lines.push_back(line);
             buf_start_pos = index+1;
             if(buf_start_pos==buf_end_pos){
@@ -80,13 +80,13 @@ void TCPConnection::slice_buffer_strings(void)
     buf_start_pos = 0;
 }
 
-void TCPConnection::send_command(string command)
+void TCPConnection::send_command(std::string command)
 {
     command += "\r\n";
     sendall(command);
 }
 
-void TCPConnection::sendall(string cmd)
+void TCPConnection::sendall(std::string cmd)
 {
     if(!connected)
         return;
@@ -98,8 +98,8 @@ void TCPConnection::sendall(string cmd)
 
     while(total < num_bytes) {
         n = send(sockfd, nbuf+total, bytesleft, 0);
-        if (n == -1) { console->log("Network error on send?  Oh I'm so scared :/"); break; }
-        if(n == 0) { console->log("I'm pretty sure I used to crash here"); connected = 0; total = num_bytes + 1; }
+        if (n == -1) { LOG(INFO) << "Network error on send?  Oh I'm so scared :/"; break; }
+        if(n == 0) { LOG(INFO) << "I'm pretty sure I used to crash here"; connected = 0; total = num_bytes + 1; }
         total += n;
         bytesleft -= n;
     }
@@ -116,7 +116,7 @@ void TCPConnection::send_data(char *buf, size_t size)
 
     while(total < num_bytes) {
         n = send(sockfd, buf+total, bytesleft, 0);
-        if (n == -1) { console->log("Network error on send?  Oh I'm so scared :/"); break; }
+        if (n == -1) { LOG(INFO) << "Network error on send?  Oh I'm so scared :/"; break; }
         total += n;
         bytesleft -= n;
     }
@@ -171,12 +171,12 @@ unsigned int TCPConnection::num_ticks(struct timeval *now)
            - (last_time.tv_usec / MS_PER_TICK);
 }
 
-string TCPConnection::get_line(void)
+std::string TCPConnection::get_line(void)
 {
     if(!has_data_waiting()){
         return NULL;
     }
-    string line = *lines.begin();
+    std::string line = *lines.begin();
     lines.pop_front();
     
     return line;

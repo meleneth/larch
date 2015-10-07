@@ -1,7 +1,9 @@
 #ifndef ___tcplistener_inc
 #define ___tcplistener_inc 1
 
-#include "tcpconnection.hpp"
+#include <netinet/in.h>
+
+#include "larch_types.hpp"
 
 namespace Larch {
 class TCPListener {

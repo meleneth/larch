@@ -1,5 +1,6 @@
 #include "webdatafetcher.hpp"
 #include "strutil.hpp"
+#include "web_request.hpp"
 
 #include <sstream>
 

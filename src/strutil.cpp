@@ -6,21 +6,15 @@
 
 #include "strutil.hpp"
 
-using std::string;
-using std::stringstream;
-using std::setprecision;
-using std::ofstream;
-using std::hex;
-
 using namespace Larch;
-void Tokenize(const string& str, std::vector<string>& tokens, const string& delimiters = " ")
+void Tokenize(const std::string& str, std::vector<std::string>& tokens, const std::string& delimiters = " ")
 {
     // Skip delimiters at beginning.
-    string::size_type lastPos = str.find_first_not_of(delimiters, 0);
+    std::string::size_type lastPos = str.find_first_not_of(delimiters, 0);
     // Find first "non-delimiter".
-    string::size_type pos     = str.find_first_of(delimiters, lastPos);
+    std::string::size_type pos     = str.find_first_of(delimiters, lastPos);
 
-    while (string::npos != pos || string::npos != lastPos)
+    while (std::string::npos != pos || std::string::npos != lastPos)
     {
         // Found a token, add it to the vector.
         tokens.push_back(str.substr(lastPos, pos - lastPos));
@@ -31,10 +25,10 @@ void Tokenize(const string& str, std::vector<string>& tokens, const string& deli
     }
 }
 
-string bitviz(unsigned int showme)
+std::string bitviz(unsigned int showme)
 {
     unsigned int i;
-    string res('-', 32);
+    std::string res('-', 32);
 
     for(i = 0; i<32 ; i++){
         res[i] = (showme & (1<<i)) ? '1' : '0';
@@ -42,7 +36,7 @@ string bitviz(unsigned int showme)
     return res;
 }
 
-string trimmed(string shaggy)
+std::string trimmed(std::string shaggy)
 {
     unsigned int start = 0;
     unsigned int end = shaggy.length() -1;
@@ -67,7 +61,7 @@ unsigned int is_whitespace(char c)
     }
 }
 
-string get_crc_32(string process_me)
+std::string get_crc_32(std::string process_me)
 {
     static int generated_table = 0;
     static unsigned int CRC32Table[256];
@@ -84,8 +78,8 @@ string get_crc_32(string process_me)
         CRC = (CRC >> 8 )^ CRC32Table[ process_me[i] ^ (( CRC ) & 0x000000FF )];
     }
 
-    stringstream result;
-    result << hex << CRC;
+    std::stringstream result;
+    result << std::hex << CRC;
     return result.str();
 }
 
@@ -107,24 +101,24 @@ void generate_crc_table(unsigned int *table)
     }
 }
 
-string replace_all_substrings(string from_me, string take_me, string for_me)
+std::string replace_all_substrings(std::string from_me, std::string take_me, std::string for_me)
 {
     size_t s = from_me.find(take_me);
     unsigned int t_length = take_me.length();
-    while(s < string::npos){
+    while(s < std::string::npos){
         from_me.replace(s, t_length, for_me);
         s=from_me.find(take_me);
     }
     return from_me;
 }
 
-string replace_substrings(string from_me, string take_me, string for_me)
+std::string replace_substrings(std::string from_me, std::string take_me, std::string for_me)
 {
-    string result;
+    std::string result;
 
     size_t s = from_me.find(take_me);
     unsigned int t_length = take_me.length();
-    while(s < string::npos){
+    while(s < std::string::npos){
         result += (from_me.substr(0, s) + for_me);
         from_me.replace(0, s + t_length, "");
         s=from_me.find(take_me);
@@ -132,7 +126,7 @@ string replace_substrings(string from_me, string take_me, string for_me)
     return result + from_me;
 }
 
-string xml_escape(string escape_me)
+std::string xml_escape(std::string escape_me)
 {
     escape_me = replace_substrings(escape_me, "&", "&amp;");
     escape_me = replace_substrings(escape_me, "\"", "&x22;");
@@ -140,7 +134,7 @@ string xml_escape(string escape_me)
     return replace_substrings(escape_me, ">", "&gt;");
 }
 
-string xml_unescape(string unescape_me)
+std::string xml_unescape(std::string unescape_me)
 {
     unescape_me = replace_substrings(unescape_me, "&x22;", "\"");
     unescape_me = replace_substrings(unescape_me, "&gt;", ">");
@@ -148,14 +142,14 @@ string xml_unescape(string unescape_me)
     return replace_substrings(unescape_me, "&amp;", "&");
 }
 
-string js_escape(string escape_me)
+std::string js_escape(std::string escape_me)
 {
     return replace_substrings(replace_substrings(escape_me, "\\", "\\\\"), "'", "\\'");
 }
 
-string safe_dirname(string unsafe)
+std::string safe_dirname(std::string unsafe)
 {
-    string s = unsafe;
+    std::string s = unsafe;
     unsigned int max_no = s.length();
     unsigned int is_unsafe;
     for(unsigned int i=0; i<max_no; ++i){
@@ -169,16 +163,16 @@ string safe_dirname(string unsafe)
     }
 
     size_t x = s.find("__");
-    while(x < string::npos){
+    while(x < std::string::npos){
         s.replace(x, 2, "_");
         x=s.find("__");
     }
     return s;
 }
 
-string human_readable_bytes(unsigned long long int num_bytes)
+std::string human_readable_bytes(unsigned long long int num_bytes)
 {
-    stringstream result;
+    std::stringstream result;
 
     unsigned long long int Kay  = static_cast<unsigned long long int>(pow(2, 10));
     unsigned long long int Mega = static_cast<unsigned long long int>(pow(2, 20));
@@ -202,13 +196,13 @@ string human_readable_bytes(unsigned long long int num_bytes)
     return result.str();
 }
 
-string file_extension(string filename)
+std::string file_extension(std::string filename)
 {
     if(filename.size() < 4)
         return "";
-    std::vector<string> pieces;
+    std::vector<std::string> pieces;
 
-    Tokenize(filename, pieces, ".");
+    Larch::Tokenize(filename, pieces, ".");
     unsigned int num = pieces.size() -1;
     return pieces[num];
 }

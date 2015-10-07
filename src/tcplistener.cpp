@@ -1,5 +1,6 @@
 #include "tcplistener.hpp"
-#include "console.hpp"
+#include "tcpconnection.hpp"
+#include"easylogging++.h"
 
 #define BACKLOG 4
 
@@ -35,7 +36,7 @@ TCPListener::TCPListener(int port_num)
         perror("listen");
         exit(1);
     }
-    console->log("Started listener");
+    LOG(INFO) << "Started listener";
 }
 
 TCPListener::~TCPListener()
