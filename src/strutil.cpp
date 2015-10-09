@@ -7,7 +7,9 @@
 #include "strutil.hpp"
 
 using namespace Larch;
-void Tokenize(const std::string& str, std::vector<std::string>& tokens, const std::string& delimiters = " ")
+using namespace std;
+
+void Larch::Tokenize(const std::string& str, std::vector<std::string>& tokens, const std::string& delimiters = " ")
 {
     // Skip delimiters at beginning.
     std::string::size_type lastPos = str.find_first_not_of(delimiters, 0);
@@ -25,7 +27,7 @@ void Tokenize(const std::string& str, std::vector<std::string>& tokens, const st
     }
 }
 
-std::string bitviz(unsigned int showme)
+std::string Larch::bitviz(unsigned int showme)
 {
     unsigned int i;
     std::string res('-', 32);
@@ -36,7 +38,7 @@ std::string bitviz(unsigned int showme)
     return res;
 }
 
-std::string trimmed(std::string shaggy)
+std::string Larch::trimmed(std::string shaggy)
 {
     unsigned int start = 0;
     unsigned int end = shaggy.length() -1;
@@ -50,7 +52,7 @@ std::string trimmed(std::string shaggy)
     return shaggy.substr(start, end-1);
 }
 
-unsigned int is_whitespace(char c)
+unsigned int Larch::is_whitespace(char c)
 {
     switch(c){
         case ' ':
@@ -61,7 +63,7 @@ unsigned int is_whitespace(char c)
     }
 }
 
-std::string get_crc_32(std::string process_me)
+std::string Larch::get_crc_32(std::string process_me)
 {
     static int generated_table = 0;
     static unsigned int CRC32Table[256];
@@ -83,7 +85,7 @@ std::string get_crc_32(std::string process_me)
     return result.str();
 }
 
-void generate_crc_table(unsigned int *table)
+void Larch::generate_crc_table(unsigned int *table)
 {
     unsigned int Polynomial = 0xEDB88320;
     unsigned int CRC;
@@ -101,7 +103,7 @@ void generate_crc_table(unsigned int *table)
     }
 }
 
-std::string replace_all_substrings(std::string from_me, std::string take_me, std::string for_me)
+std::string Larch::replace_all_substrings(std::string from_me, std::string take_me, std::string for_me)
 {
     size_t s = from_me.find(take_me);
     unsigned int t_length = take_me.length();
@@ -112,7 +114,7 @@ std::string replace_all_substrings(std::string from_me, std::string take_me, std
     return from_me;
 }
 
-std::string replace_substrings(std::string from_me, std::string take_me, std::string for_me)
+std::string Larch::replace_substrings(std::string from_me, std::string take_me, std::string for_me)
 {
     std::string result;
 
@@ -126,7 +128,7 @@ std::string replace_substrings(std::string from_me, std::string take_me, std::st
     return result + from_me;
 }
 
-std::string xml_escape(std::string escape_me)
+std::string Larch::xml_escape(std::string escape_me)
 {
     escape_me = replace_substrings(escape_me, "&", "&amp;");
     escape_me = replace_substrings(escape_me, "\"", "&x22;");
@@ -134,7 +136,7 @@ std::string xml_escape(std::string escape_me)
     return replace_substrings(escape_me, ">", "&gt;");
 }
 
-std::string xml_unescape(std::string unescape_me)
+std::string Larch::xml_unescape(std::string unescape_me)
 {
     unescape_me = replace_substrings(unescape_me, "&x22;", "\"");
     unescape_me = replace_substrings(unescape_me, "&gt;", ">");
@@ -142,12 +144,12 @@ std::string xml_unescape(std::string unescape_me)
     return replace_substrings(unescape_me, "&amp;", "&");
 }
 
-std::string js_escape(std::string escape_me)
+std::string Larch::js_escape(std::string escape_me)
 {
     return replace_substrings(replace_substrings(escape_me, "\\", "\\\\"), "'", "\\'");
 }
 
-std::string safe_dirname(std::string unsafe)
+std::string Larch::safe_dirname(std::string unsafe)
 {
     std::string s = unsafe;
     unsigned int max_no = s.length();
@@ -170,7 +172,7 @@ std::string safe_dirname(std::string unsafe)
     return s;
 }
 
-std::string human_readable_bytes(unsigned long long int num_bytes)
+std::string Larch::human_readable_bytes(unsigned long long int num_bytes)
 {
     std::stringstream result;
 
@@ -196,7 +198,7 @@ std::string human_readable_bytes(unsigned long long int num_bytes)
     return result.str();
 }
 
-std::string file_extension(std::string filename)
+std::string Larch::file_extension(std::string filename)
 {
     if(filename.size() < 4)
         return "";

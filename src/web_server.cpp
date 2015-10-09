@@ -30,9 +30,9 @@ WebServer::~WebServer()
   static_contents.empty();
 }
 
-namespace Larch {
+/*namespace Larch {
   extern void handle_web_request(WebRequest *request, WebResponse *response);
-}
+}*/
 
 void WebServer::handle_request(WebRequest *request)
 {
@@ -52,7 +52,7 @@ void WebServer::handle_request(WebRequest *request)
     }
   }
 
-  handle_web_request(request, &response);
+  //handle_web_request(request, &response);
   response.prepare_full_response();
 
   request->client->send_data((char *) response.full_response.c_str(), response.full_response.length());
