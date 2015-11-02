@@ -1,3 +1,5 @@
+#include "easylogging++.h"
+
 #include <larch_types.hpp>
 
 #include "web_server.hpp"
@@ -38,7 +40,7 @@ void WebServer::handle_request(WebRequest *request)
 {
   WebResponse response;
 
-  //console->log(request->get_uri());
+  LOG(INFO) << request->get_uri();
   
   if(request->path == "/") {
     for(auto sc : static_contents) {
