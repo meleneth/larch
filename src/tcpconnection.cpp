@@ -8,7 +8,7 @@ TCPConnection::TCPConnection(std::string hostname, int port) // Constructor
     buf_start_pos = 0;
     buf_end_pos = 0;
 
-    if ((he=gethostbyname(hostname.c_str())) == NULL) {  // get the host info 
+    if ((he=gethostbyname(hostname.c_str())) == nullptr) {  // get the host info 
         perror("gethostbyname");
         exit(1);
     }
@@ -29,13 +29,13 @@ TCPConnection::TCPConnection(std::string hostname, int port) // Constructor
         exit(1);
     }
     connected = 1;
-    gettimeofday(&last_time, NULL);
+    gettimeofday(&last_time, nullptr);
     bytes_since_last_time = 0;
 }
 
 TCPConnection::TCPConnection()
 {
-    gettimeofday(&last_time, NULL);
+    gettimeofday(&last_time, nullptr);
     connected = 0;
     buf_start_pos = 0;
     buf_end_pos = 0;
@@ -143,7 +143,7 @@ unsigned int TCPConnection::read_packets(void)
 unsigned int TCPConnection::get_krate()
 {
     struct timeval now;
-    gettimeofday(&now, NULL);
+    gettimeofday(&now, nullptr);
     unsigned int ticks = num_ticks(&now);
     // 10 ticks / second for krate
     if(ticks){
@@ -174,7 +174,7 @@ unsigned int TCPConnection::num_ticks(struct timeval *now)
 std::string TCPConnection::get_line(void)
 {
     if(!has_data_waiting()){
-        return NULL;
+        return nullptr;
     }
     std::string line = *lines.begin();
     lines.pop_front();

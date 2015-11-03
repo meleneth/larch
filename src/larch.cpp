@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     int result;
     do {
       //result = select(fdmax+1, &read_fds, NULL, NULL, &tv);
-      result = select(fdmax+1, &read_fds, NULL, NULL, NULL);
+      result = select(fdmax+1, &read_fds, nullptr, nullptr, nullptr);
     } while ((result == -1) && (errno == EINTR));
 
     if(result == -1){
