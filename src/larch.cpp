@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
   cout << "larch: larch\n";
 
   auto server = Larch::WebServer{"site", 4042};
+  server.register_file("index.html", "bin/site/index.html", "text/html");
 
   fd_set read_fds;
   struct timeval tv;
