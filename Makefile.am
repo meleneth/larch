@@ -49,3 +49,7 @@ src/web_static_file.cpp \
 src/web_static_file.hpp
 
 AM_CXXFLAGS = -I src -I vendor
+
+format-code :
+	for i in ${bin_larch_SOURCES}; do clang-format-3.5 -style=Google -i $$i; done
+

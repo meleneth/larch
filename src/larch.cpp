@@ -9,8 +9,7 @@ INITIALIZE_EASYLOGGINGPP
 
 using namespace std;
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
   cout << "larch: larch\n";
 
   auto server = Larch::WebServer{"site", 4042};
@@ -23,41 +22,41 @@ int main(int argc, char *argv[])
   int fdmax = 0;
   int still_running = 1;
 
-  //check for new incoming web request
+  // check for new incoming web request
 
-  while(still_running) {
+  while (still_running) {
     FD_ZERO(&read_fds);
 
     FD_SET(server.listener->sockfd, &read_fds);
     fdmax = server.listener->sockfd;
 
-    for(auto connection : server.connections) {
-        int fd = connection->sockfd;
-        FD_SET(fd, &read_fds);
-        if(fdmax < fd){
-            fdmax = fd;
-        }
+    for (auto connection : server.connections) {
+      int fd = connection->sockfd;
+      FD_SET(fd, &read_fds);
+      if (fdmax < fd) {
+        fdmax = fd;
+      }
     }
 
     int result;
     do {
-      //result = select(fdmax+1, &read_fds, NULL, NULL, &tv);
-      result = select(fdmax+1, &read_fds, nullptr, nullptr, nullptr);
+      // result = select(fdmax+1, &read_fds, NULL, NULL, &tv);
+      result = select(fdmax + 1, &read_fds, nullptr, nullptr, nullptr);
     } while ((result == -1) && (errno == EINTR));
 
-    if(result == -1){
-        perror("select");
-        exit(1);
+    if (result == -1) {
+      perror("select");
+      exit(1);
     }
 
-    if(FD_ISSET(server.listener->sockfd, &read_fds)) {
+    if (FD_ISSET(server.listener->sockfd, &read_fds)) {
       server.handle_new_connection();
     }
 
-    for(auto connection : server.connections) {
-        if(FD_ISSET(connection->sockfd, &read_fds)){
-            connection->read_packets();
-        }
+    for (auto connection : server.connections) {
+      if (FD_ISSET(connection->sockfd, &read_fds)) {
+        connection->read_packets();
+      }
     }
 
     server.tick();
@@ -65,6 +64,3 @@ int main(int argc, char *argv[])
 
   return 0;
 }
-
-
-
