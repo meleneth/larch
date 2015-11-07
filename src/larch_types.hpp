@@ -17,8 +17,9 @@ class WebResponse;
 class WebDataFetcher;
 class WebStaticFile;
 
-using WebStaticFileList =  std::list<std::shared_ptr<WebStaticFile>>;
-using WebStaticFile_list_iterator =  std::list<std::shared_ptr<WebStaticFile>>::iterator;
+using WebStaticFileList = std::list<std::shared_ptr<WebStaticFile>>;
+using WebStaticFile_list_iterator =
+    std::list<std::shared_ptr<WebStaticFile>>::iterator;
 }
 
 #include <pthread.h>
