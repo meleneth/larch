@@ -1,0 +1,15 @@
+*serve basic hard coded static page
+update basic static page as the page changes, with no reload of the server (fstat() at request time)
+able to serve a directory of files
+be able to use an external filter program (with appropriate arguments) to take file contents and pre-process them (i.e. compile coffeescript)
+setup default content filter rules for things that seem reasonable
+  haml
+  markdown
+  scss
+  coffeescript
+  injectable safe-ify (??)
+  minification
+  compression
+concatenation - take multiple files and combine them as a filter step.  May need processing before or after.
+be able to run filters without buffering in between - think multiple shell pipes
+  
