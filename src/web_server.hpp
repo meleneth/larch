@@ -5,6 +5,7 @@
 
 #include <string>
 #include <list>
+#include <memory>
 
 // This entire webserver is such a non-standard-using
 // non RFC piece of work, that this program shouldn't
@@ -14,8 +15,7 @@ namespace Larch {
 
 class WebServer {
  public:
-  WebServer(std::string document_root, int port_no);
-  ~WebServer();
+  WebServer(std::string web_root, int port_no) : web_root(web_root), listener{ std::make_unique<TCPListener>(port_no) } {}
 
   void log_to_file(std::string filename);
   void handle_request(WebRequest *request);
@@ -24,7 +24,7 @@ class WebServer {
                      std::string content_type);
   void tick(void);
 
-  TCPListener *listener;
+  std::unique_ptr<Larch::TCPListener> listener;
   std::list<TCPConnection *> connections;
   std::list<WebDataFetcher *> handlers;
   std::string web_root;

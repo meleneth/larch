@@ -19,17 +19,6 @@
 using namespace Larch;
 using namespace std;
 
-WebServer::WebServer(std::string web_root, int port_no) {
-  listener = new TCPListener(port_no);
-  this->web_root = web_root;
-}
-
-WebServer::~WebServer() {
-  delete listener;
-
-  static_contents.empty();
-}
-
 /*namespace Larch {
   extern void handle_web_request(WebRequest *request, WebResponse *response);
 }*/

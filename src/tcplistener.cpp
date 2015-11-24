@@ -38,7 +38,9 @@ TCPListener::TCPListener(int port_num) {
   LOG(INFO) << "Started listener";
 }
 
-TCPListener::~TCPListener() {}
+TCPListener::~TCPListener() {
+  LOG(INFO) << "~TCPListener()";
+}
 
 TCPConnection *TCPListener::get_waiting_connection() {
   TCPConnection *c = new TCPConnection();
