@@ -15,7 +15,8 @@ namespace Larch {
 
 class WebServer {
  public:
-  WebServer(std::string web_root, int port_no) : web_root(web_root), listener{ std::make_unique<TCPListener>(port_no) } {}
+  WebServer(std::string web_root, int port_no)
+      : web_root(web_root), listener{std::make_unique<TCPListener>(port_no)} {}
 
   void log_to_file(std::string filename);
   void handle_request(WebRequest *request);

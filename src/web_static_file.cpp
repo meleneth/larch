@@ -8,8 +8,7 @@
 
 using namespace Larch;
 
-void WebStaticFile::load_file(std::string filename)
-{
+void WebStaticFile::load_file(std::string filename) {
   struct stat file_stats;
   stat(filename.c_str(), &file_stats);
   st_atim = file_stats.st_atim;
@@ -27,16 +26,14 @@ void WebStaticFile::load_file(std::string filename)
   LOG(INFO) << "Loaded file " << filename;
 }
 
-bool WebStaticFile::is_file_stale()
-{
+bool WebStaticFile::is_file_stale() {
   struct stat file_stats;
   stat(filename.c_str(), &file_stats);
   return st_atim.tv_sec < file_stats.st_atim.tv_sec;
 }
 
-void WebStaticFile::reload_if_stale()
-{
-  if(is_file_stale()) {
+void WebStaticFile::reload_if_stale() {
+  if (is_file_stale()) {
     load_file(filename);
   }
 }
