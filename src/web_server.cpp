@@ -30,12 +30,13 @@ void WebServer::handle_request(WebRequest *request) {
 
   if (request->path == "/") {
     for (auto sc : static_contents) {
-      if (sc->filename == request->filename) {
+      if (sc->url == request->filename) {
+        sc->reload_if_stale();
         response.content_type = sc->content_type;
-        response.prepare_response_for_bytes(sc->content_length);
+        response.prepare_response_for_bytes(sc->buffer.size());
         request->client->send_data((char *)response.full_response.c_str(),
                                    response.full_response.length());
-        request->client->send_data(sc->buffer, sc->content_length);
+        request->client->send_data(&sc->buffer[0], sc->buffer.size());
         return;
       }
     }
@@ -85,19 +86,8 @@ void WebServer::register_file(string url, string filename,
                               std::string content_type) {
   auto static_file = make_shared<WebStaticFile>();
 
-  struct stat file_stats;
-  stat(filename.c_str(), &file_stats);
-
-  int num_bytes = file_stats.st_size;
-  char *buffer = (char *)malloc(num_bytes);
-
-  static_file->content_length = num_bytes;
-  static_file->buffer = buffer;
-  static_file->filename = url;
+  static_file->load_file(filename);
+  static_file->url = url;
 
   static_contents.push_back(static_file);
-
-  FILE *fp = fopen(filename.c_str(), "r");
-  fread(buffer, num_bytes, 1, fp);
-  fclose(fp);
 }
