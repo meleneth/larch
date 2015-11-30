@@ -4,6 +4,7 @@
 #include "web_server.hpp"
 #include "tcplistener.hpp"
 #include "tcpconnection.hpp"
+#include "web_static_file.hpp"
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -14,6 +15,8 @@ int main(int argc, char *argv[]) {
 
   auto server = Larch::WebServer{"site", 4042};
   server.register_file("index.html", "bin/site/index.html", "text/html");
+  auto coffeescript = server.register_file("hello_world.js", "bin/site/hello_world.coffee", "text/javascript");
+  coffeescript->compile_coffeescript();
 
   fd_set read_fds;
   struct timeval tv;

@@ -82,7 +82,7 @@ void WebServer::handle_new_connection(void) {
   connections.push_back(listener->get_waiting_connection());
 }
 
-void WebServer::register_file(string url, string filename,
+std::shared_ptr<WebStaticFile> WebServer::register_file(string url, string filename,
                               std::string content_type) {
   auto static_file = make_shared<WebStaticFile>();
 
@@ -90,4 +90,5 @@ void WebServer::register_file(string url, string filename,
   static_file->url = url;
 
   static_contents.push_back(static_file);
+  return static_file;
 }

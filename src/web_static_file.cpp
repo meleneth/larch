@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "easylogging++.h"
+#include "pstream.h"
 
 #include "web_static_file.hpp"
 
@@ -36,4 +37,17 @@ void WebStaticFile::reload_if_stale() {
   if (is_file_stale()) {
     load_file(filename);
   }
+}
+
+void WebStaticFile::compile_coffeescript() {
+  LOG(INFO) << "compile_coffeescript()";
+  using namespace redi;
+  std::vector<char> temp_buffer;
+
+  const pstreams::pmode mode = pstreams::pstdout | pstreams::pstdin;
+  ipstream child("coffee -p -s", mode);
+  child.write(&buffer[0], buffer.size());
+  temp_buffer.reserve(256000);
+  child.out().read(&temp_buffer[0], temp_buffer.capacity());
+  buffer = temp_buffer;
 }

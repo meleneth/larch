@@ -17,6 +17,7 @@ class WebStaticFile {
   struct timespec st_atim;
 
   void load_file(std::string filename);
+  void compile_coffeescript();
   void reload_if_stale();
   bool is_file_stale();
 };
