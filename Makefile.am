@@ -29,7 +29,8 @@ bin_larch_SOURCES = src/larch.cpp ${VENDOR_SRC} ${SHARED_SRC}
 
 bin_larcht_SOURCES = src/larcht.cpp ${VENDOR_SRC} ${SHARED_SRC}
 
-AM_CXXFLAGS = -I src -I vendor
+AM_CXXFLAGS = -I src -I vendor 
+#-stdlib=libc++
 
 format-code :
 	for i in ${SHARED_SRC} src/larch.cpp src/larcht.cpp ; do clang-format-3.5 -style=Google -i $$i; done

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 
+#include "default_init_allocator.hpp"
 #include "easylogging++.h"
 #include "pstream.h"
 
@@ -41,20 +42,19 @@ void WebStaticFile::reload_if_stale() {
 
 void WebStaticFile::compile_coffeescript() {
   using namespace redi;
-  std::vector<char> temp_buffer;
+  std::vector<char, default_init_allocator<char>> temp_buffer;
 
   const pstreams::pmode mode = pstreams::pstdout | pstreams::pstdin;
   pstream child("coffee -p -s", mode);
   child.write(&buffer[0], buffer.size());
   child << peof;
+
   temp_buffer.reserve(256000);
   child.out().read(&temp_buffer[0], temp_buffer.capacity());
+
   auto num_bytes = child.out().gcount();
-  puts(&temp_buffer[0]);
   temp_buffer.resize(num_bytes);
-  buffer.resize(num_bytes);
-  std::copy(temp_buffer.begin(), temp_buffer.end(), buffer.begin());
-  LOG(INFO) << " herp derp";
-  puts(&buffer[0]);
-  LOG(INFO) << "elvis has left hte building";
+  buffer.resize(num_bytes + 1);
+  buffer.assign(begin(temp_buffer), end(temp_buffer));
+  buffer[num_bytes] = 0;
 }
