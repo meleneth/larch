@@ -25,7 +25,7 @@ void WebStaticFile::load_file(std::string filename) {
 
   this->filename = filename;
 
-  LOG(INFO) << "Loaded file " << filename;
+  apply_filters();
 }
 
 bool WebStaticFile::is_file_stale() {
@@ -57,4 +57,29 @@ void WebStaticFile::compile_coffeescript() {
   buffer.resize(num_bytes + 1);
   buffer.assign(begin(temp_buffer), end(temp_buffer));
   buffer[num_bytes] = 0;
+}
+
+void WebStaticFile::add_filter(std::string filter) {
+  LOG(INFO) << "Added filter: " << filter;
+  filters.push_back(filter);
+}
+
+void WebStaticFile::apply_filters() {
+  using namespace redi;
+  const pstreams::pmode mode = pstreams::pstdout | pstreams::pstdin;
+  std::vector<char, default_init_allocator<char>> temp_buffer;
+  temp_buffer.reserve(256000);
+
+  for(auto filter : filters) {
+    pstream child(filter, mode);
+    child.write(&buffer[0], buffer.size());
+    child << peof;
+
+    child.out().read(&temp_buffer[0], temp_buffer.capacity());
+
+    auto num_bytes = child.out().gcount();
+    temp_buffer.resize(num_bytes);
+    buffer.resize(num_bytes);
+    buffer.assign(begin(temp_buffer), end(temp_buffer));
+  }
 }

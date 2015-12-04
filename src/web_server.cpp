@@ -86,7 +86,9 @@ std::shared_ptr<WebStaticFile> WebServer::register_file(
     string url, string filename, std::string content_type) {
   auto static_file = make_shared<WebStaticFile>();
 
-  static_file->load_file(filename);
+  LOG(INFO) << "registering for [" << url << "] " << filename;
+  static_file->filename = filename;
+  static_file->st_atim.tv_sec = 0;
   static_file->url = url;
 
   static_contents.push_back(static_file);

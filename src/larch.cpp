@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
   server.register_file("index.html", "bin/site/index.html", "text/html");
   auto coffeescript = server.register_file(
       "hello_world.js", "bin/site/hello_world.coffee", "text/javascript");
-  coffeescript->compile_coffeescript();
+  coffeescript->add_filter("coffee -p -s");
 
   fd_set read_fds;
   struct timeval tv;

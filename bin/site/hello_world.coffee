@@ -1,4 +1,4 @@
 foo = ->
-  alert "Look Out, World"
+  alert "Look Out, World >:E"
 
 foo()
