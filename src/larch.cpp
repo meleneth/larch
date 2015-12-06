@@ -14,7 +14,11 @@ int main(int argc, char *argv[]) {
   cout << "larch: larch\n";
 
   auto server = Larch::WebServer{"site", 4042};
-  server.register_file("index.html", "bin/site/index.html", "text/html");
+
+  auto index =
+      server.register_file("index.html", "bin/site/index.haml", "text/html");
+  index->add_filter("haml -s");
+
   auto coffeescript = server.register_file(
       "hello_world.js", "bin/site/hello_world.coffee", "text/javascript");
   coffeescript->add_filter("coffee -p -s");

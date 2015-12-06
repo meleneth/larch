@@ -70,7 +70,7 @@ void WebStaticFile::apply_filters() {
   std::vector<char, default_init_allocator<char>> temp_buffer;
   temp_buffer.reserve(256000);
 
-  for(auto filter : filters) {
+  for (auto filter : filters) {
     pstream child(filter, mode);
     child.write(&buffer[0], buffer.size());
     child << peof;
