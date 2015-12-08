@@ -1,4 +1,5 @@
 bin_PROGRAMS = bin/larch bin/larcht
+noinst_LIBRARIES = src/liblarch.a
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -25,11 +26,15 @@ src/web_server.hpp \
 src/web_static_file.cpp \
 src/web_static_file.hpp
 
-bin_larch_SOURCES = src/larch.cpp ${VENDOR_SRC} ${SHARED_SRC}
+src_liblarch_a_SOURCES = ${SHARED_SRC}
 
-bin_larcht_SOURCES = src/larcht.cpp ${VENDOR_SRC} ${SHARED_SRC}
+bin_larch_SOURCES = src/larch.cpp ${VENDOR_SRC} src/liblarch.a
+
+bin_larcht_SOURCES = src/larcht.cpp ${VENDOR_SRC} src/liblarch.a
 
 AM_CXXFLAGS = -I src -I vendor 
+bin_larch_LDADD = src/liblarch.a
+bin_larcht_LDADD = src/liblarch.a
 #-stdlib=libc++
 
 format-code :
